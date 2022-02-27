@@ -19,7 +19,7 @@ const watchChanges = (dir, lastTimestamp) => {
         if (!lastTimestamp || (lastTimestamp === timestamp)) {
             setTimeout (() => watchChanges (dir, timestamp), 1000) // retry after 1s
         } else {
-            chrome.runtime.reload ()
+            setTimeout (() => chrome.runtime.reload (), 1000) // reload after 1s
         }
     })
 }
@@ -29,7 +29,8 @@ chrome.management.getSelf (self => {
         chrome.runtime.getPackageDirectoryEntry (dir => watchChanges (dir))
         chrome.tabs.query ({ active: true, lastFocusedWindow: true }, tabs => { // NB: see https://github.com/xpl/crx-hotreload/issues/5
             if (tabs[0]) {
-                chrome.tabs.reload (tabs[0].id)
+                setTimeout (() => chrome.tabs.reload (tabs[0].id), 1000) // reload after 1s
+                
             }
         })
     }
